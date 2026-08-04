@@ -1,142 +1,100 @@
 # Bài 11: Toán rời rạc, Độ phức tạp thuật toán & Tối ưu hóa lồi
 
 ## Mục tiêu
-- Tổ hợp/hoán vị cơ bản, lý thuyết đồ thị sơ lược, Big-O.
-- Hàm lồi & tối ưu hóa lồi.
-- **Gradient Descent** và các biến thể — thuật toán tối ưu dùng trong hầu hết ML/DL.
+- Nắm tổ hợp/hoán vị, Big-O từ ý nghĩa, không chỉ công thức.
+- Hiểu sâu 3 biến thể Gradient Descent — TẠI SAO chúng khác nhau về bản chất, trước khi cài đặt.
 
-## 1. Tổ hợp & Hoán vị — nền tảng đếm xác suất
+---
 
-**Hoán vị (Permutation)**: số cách sắp xếp $n$ phần tử: $n! = n(n-1)(n-2)\cdots 1$
+## PHẦN A — Ý NGHĨA TOÁN HỌC
 
-**Tổ hợp (Combination)**: số cách chọn $k$ phần tử từ $n$ (không quan tâm thứ tự):
+### 1. Hoán vị & Tổ hợp — đếm "có phân biệt thứ tự" vs "không phân biệt thứ tự"
+
+**Hoán vị:** số cách sắp xếp $n$ phần tử PHÂN BIỆT theo thứ tự. Lý luận đếm: vị trí đầu tiên có $n$ lựa chọn, vị trí thứ 2 còn $n-1$ lựa chọn (đã dùng 1), ..., vị trí cuối chỉ còn 1 lựa chọn → tổng số cách $=n\times(n-1)\times...\times1=n!$.
+
+**Tổ hợp:** số cách CHỌN $k$ phần tử từ $n$, KHÔNG quan tâm thứ tự. Lý luận đếm: trước tiên đếm số cách chọn $k$ phần tử CÓ thứ tự (đó là $\frac{n!}{(n-k)!}$ — giống hoán vị nhưng dừng sau $k$ vị trí), sau đó chia cho $k!$ (số cách sắp xếp lại $k$ phần tử đã chọn, vì ta không phân biệt thứ tự nên mọi cách sắp xếp lại của cùng 1 tập hợp được coi là "1 lần đếm", nhưng công thức trên đã đếm nó $k!$ lần):
 
 $$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
 
+**Ví dụ tính tay:** chọn 3 người từ 5 người để lập đội (không phân vai trò) — $\binom{5}{3}=\frac{5!}{3!2!}=\frac{120}{6\times2}=10$ cách.
+
+**Ứng dụng ML:** công thức Binomial ([Bài 9 mục 5](./9_probability_distributions.md)) dùng trực tiếp $\binom{n}{k}$ để đếm số cách sắp xếp $k$ "thành công" trong $n$ lần thử; k-fold cross-validation ([Bài 16](./16_model_evaluation.md)) liên quan tới cách CHIA dữ liệu thành các phần không trùng lặp.
+
+### 2. Đồ thị — cấu trúc dữ liệu đứng sau nhiều mô hình ML
+
+Đồ thị $G=(V,E)$ gồm đỉnh và cạnh nối chúng. Cây (tree) là đồ thị đặc biệt: liên thông, KHÔNG có chu trình (đi từ 1 đỉnh, không có đường nào quay lại chính nó mà không lặp cạnh) — đây chính xác là cấu trúc của **Decision Tree** ([Bài 18](./18_trees_ensembles.md)): mỗi node là 1 câu hỏi rẽ nhánh, không có "vòng lặp" quay lại câu hỏi đã hỏi. Bản thân mạng neural cũng là 1 đồ thị có hướng (**computational graph**) — mỗi phép toán là 1 node, cạnh biểu diễn luồng dữ liệu — đây chính là cấu trúc dữ liệu mà PyTorch/TensorFlow dùng nội bộ để tự động áp dụng chain rule ([Bài 6 mục 5](./6_calculus_matrix_calculus.md)) qua nhiều lớp (autograd).
+
+### 3. Độ phức tạp thuật toán (Big-O) — áp dụng cho việc CHỌN thuật toán ML
+
+Big-O mô tả tốc độ TĂNG của khối lượng tính toán khi kích thước dữ liệu tăng — không phải thời gian chạy tuyệt đối, mà là **xu hướng** khi $n$ (hoặc $m$) rất lớn.
+
+| Thuật toán | Độ phức tạp | Ý nghĩa thực tế |
+|---|---|---|
+| Normal Equation ([Bài 3 mục 6](./3_linear_algebra_matrices.md)) | $O(n^3)$ (nghịch đảo $X^TX$) | Số đặc trưng $n$ tăng gấp đôi → tính toán tăng GẤP 8 LẦN — bùng nổ nhanh, không khả thi khi $n$ lớn (vd hàng nghìn đặc trưng ảnh) |
+| Gradient Descent | $O(nm)$ mỗi bước | Tăng TUYẾN TÍNH theo cả $n$ và $m$ — chịu được $n$ lớn hơn nhiều |
+| k-NN dự đoán ([Bài 19](./19_svm_knn_clustering.md)) | $O(m)$ mỗi truy vấn | Không "học" tham số, nhưng CHẬM DẦN khi dataset ($m$) lớn — mỗi dự đoán phải so sánh với TOÀN BỘ dữ liệu train |
+
+**Đây chính là lý do toán học (không phải chỉ "kinh nghiệm") vì sao Deep Learning KHÔNG dùng Normal Equation** — mạng neural có thể có hàng triệu tham số ($n$ rất lớn), $O(n^3)$ trở nên hoàn toàn bất khả thi, buộc phải dùng Gradient Descent ($O(n)$ mỗi tham số mỗi bước).
+
+### 4. Hàm lồi & Tập lồi — nhắc lại và hoàn thiện từ Bài 7
+
+Tập $S$ **lồi**: đoạn thẳng nối 2 điểm bất kỳ trong $S$ vẫn nằm hoàn toàn trong $S$ — trực giác: "không có góc lõm/khuyết". Hàm $f$ lồi $\Leftrightarrow$ Hessian $\succeq0$ mọi nơi ([Bài 7 mục 2-3](./7_calculus_optimization.md)).
+
+**Định lý nền tảng (đã chứng minh trực giác ở Bài 7, nhắc lại vì đây là ĐỘNG LỰC của toàn bộ phần tối ưu hóa):** với hàm lồi, MỌI điểm có $\nabla f=0$ là cực tiểu TOÀN CỤC — không có "bẫy" cực tiểu địa phương tồi. Đây là lý do "yên tâm" khi dùng Gradient Descent cho Linear/Logistic Regression (lồi), nhưng phải cẩn trọng hơn nhiều với Deep Learning (không lồi).
+
+### 5. Gradient Descent — nhắc lại công thức, giờ tập trung vào 3 BIẾN THỂ
+
+$$\vec{w}_{t+1} = \vec{w}_t - \eta\nabla L(\vec{w}_t)$$
+
+đã chứng minh đầy đủ TẠI SAO công thức này làm giảm loss ở [Bài 7 mục 5](./7_calculus_optimization.md). Câu hỏi còn lại: **tính $\nabla L$ dựa trên BAO NHIÊU dữ liệu mỗi bước?** — đây là điểm khác biệt giữa 3 biến thể.
+
+**Batch GD — dùng TOÀN BỘ $m$ mẫu mỗi bước:** $\nabla L=\frac{2}{m}X^T(X\vec{w}-\vec{y})$ (công thức đầy đủ, chính xác — [Bài 6 mục 3](./6_calculus_matrix_calculus.md)). Ưu điểm: gradient tính được là **chính xác tuyệt đối** theo định nghĩa hàm loss trên toàn dataset → đường hội tụ mượt, đúng lý thuyết ở [Bài 7 mục 5](./7_calculus_optimization.md). Nhược điểm: với $m$ rất lớn (hàng triệu mẫu), TÍNH GRADIENT MỘT LẦN đã cực kỳ tốn kém — chưa cập nhật được tham số nào cả.
+
+**Stochastic GD (SGD) — dùng CHỈ 1 mẫu ngẫu nhiên mỗi bước:** gradient tính từ 1 mẫu chỉ là **ước lượng ngẫu nhiên (noisy estimate)** của gradient thật (gradient trung bình trên toàn dataset) — về mặt kỳ vọng, $E[\text{gradient 1 mẫu}] = \text{gradient thật}$ (tính chất tuyến tính của kỳ vọng — [Bài 9 mục 2](./9_probability_distributions.md), áp dụng cho trung bình gradient từng mẫu), nhưng MỖI lần cụ thể lại dao động mạnh quanh giá trị thật đó — đây là lý do đường hội tụ SGD "nhiễu", zig-zag thay vì mượt như Batch GD. Đổi lại, mỗi bước cực rẻ, có thể cập nhật hàng triệu lần nhanh chóng.
+
+**Mini-batch GD — dùng $b$ mẫu ($1<b<m$) mỗi bước:** ước lượng gradient bằng trung bình của $b$ mẫu ngẫu nhiên — theo tính chất phương sai của trung bình mẫu ($\text{Var}(\bar{X})=\text{Var}(X)/b$, hệ quả trực tiếp từ [Bài 9 mục 3](./9_probability_distributions.md)), **độ nhiễu của ước lượng gradient giảm theo $1/\sqrt{b}$** khi $b$ tăng — đây là lý do TOÁN HỌC (không phải chỉ thực nghiệm) giải thích vì sao Mini-batch "mượt hơn" SGD nhưng vẫn "rẻ hơn nhiều" so với Batch GD: tăng $b$ giúp giảm nhiễu nhưng lợi ích giảm dần (do căn bậc 2), trong khi chi phí tính toán tăng TUYẾN TÍNH theo $b$ — đây chính là lý do các giá trị $b$ vừa phải (32, 64, 128...) thường là điểm cân bằng tốt trong thực tế Deep Learning ([Bài 20-22](./20_neural_networks.md)).
+
+---
+
+## PHẦN B — Cài đặt & Minh họa bằng code
+
+![Gradient Descent hội tụ dọc theo đường đồng mức của hàm loss](./images/gradient_descent_contour.svg)
+
 ```python
+import numpy as np
 from math import comb, perm
 
-print(perm(5, 3))   # 60 — số cách sắp xếp 3 trong 5 phần tử có thứ tự
-print(comb(5, 3))    # 10 — số cách chọn 3 trong 5 phần tử không thứ tự
-```
+# Mục 1: verify tổ hợp/hoán vị
+print(perm(5, 3))   # 60
+print(comb(5, 3))    # 10 — khớp tính tay
 
-**Ứng dụng ML:** công thức Binomial ([Bài 9](./9_probability_distributions.md)) dùng trực tiếp $\binom{n}{k}$; k-fold cross-validation ([Bài 16](./16_model_evaluation.md)) liên quan tới cách chia tổ hợp dữ liệu; feature selection đôi khi cần xét $\binom{n}{k}$ tổ hợp đặc trưng.
-
-## 2. Lý thuyết đồ thị sơ lược
-
-Đồ thị $G = (V, E)$ gồm tập đỉnh $V$ và tập cạnh $E$. Trong ML:
-- **Decision Tree/Random Forest** ([Bài 18](./18_trees_ensembles.md)) là cấu trúc cây (1 dạng đặc biệt của đồ thị) — mỗi node là 1 quyết định rẽ nhánh.
-- **Graph Neural Network** (ngoài phạm vi lộ trình cơ bản này) áp dụng deep learning trực tiếp lên dữ liệu dạng đồ thị (mạng xã hội, phân tử hóa học).
-- **Neural Network** bản thân cũng là 1 đồ thị có hướng (computational graph) — mỗi node là 1 phép toán, cạnh là luồng dữ liệu, chính là cấu trúc mà PyTorch/TensorFlow dùng để tự động tính đạo hàm (autograd).
-
-## 3. Độ phức tạp thuật toán (Big-O) — áp dụng cho ML
-
-Nhắc lại khái niệm Big-O (nếu đã quen từ lập trình competitive/[Go](../Go/ROADMAP.md)/[Python](../Python/ROADMAP.md)) trong ngữ cảnh ML:
-
-| Thuật toán | Độ phức tạp (huấn luyện) | Ghi chú |
-|---|---|---|
-| Linear Regression (Normal Equation) | $O(n^3 + n^2m)$ | $n$=số đặc trưng, $m$=số mẫu — nghịch đảo ma trận $O(n^3)$ tốn kém khi $n$ lớn |
-| Linear Regression (Gradient Descent) | $O(nm)$ mỗi bước | Rẻ hơn Normal Equation khi $n$ lớn — lý do dùng GD cho dataset nhiều đặc trưng |
-| k-NN (dự đoán) | $O(m)$ mỗi truy vấn | Không có "huấn luyện" thật sự, nhưng dự đoán chậm với dataset lớn |
-| k-Means | $O(kmi)$ | $k$=số cụm, $i$=số vòng lặp |
-| Decision Tree | $O(mn\log m)$ | Xây cây |
-
-Đây chính là lý do **Normal Equation không dùng được cho Deep Learning** (hàng triệu tham số → $n^3$ là bất khả thi), buộc phải dùng Gradient Descent.
-
-## 4. Hàm lồi & Tập lồi (Convex Set/Function) — nhắc lại từ Bài 7, mở rộng
-
-Tập $S$ là **lồi** nếu với mọi $x_1, x_2 \in S$, đoạn thẳng nối chúng cũng nằm trong $S$:
-
-$$\lambda x_1 + (1-\lambda)x_2 \in S, \quad \forall \lambda \in [0,1]$$
-
-Hàm $f$ lồi $\Leftrightarrow$ tập "trên đồ thị" (epigraph) của nó là tập lồi $\Leftrightarrow$ Hessian $\succeq 0$ mọi nơi ([Bài 7 mục 3](./7_calculus_optimization.md)).
-
-**Tính chất cực kỳ quan trọng:** với hàm lồi, **mọi cực tiểu cục bộ = cực tiểu toàn cục**. Đây là lý do Linear/Logistic Regression "dễ" tối ưu — Gradient Descent CHẮC CHẮN tìm được nghiệm tốt nhất (với learning rate phù hợp), không lo bị "mắc kẹt".
-
-## 5. Gradient Descent — thuật toán trung tâm của ML/DL
-
-Công thức cập nhật (đã giới thiệu ở [Bài 5](./5_calculus_derivatives.md), [Bài 7](./7_calculus_optimization.md)):
-
-$$\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L(\vec{w}_t)$$
-
-```python
-import numpy as np
-
-def gradient_descent(grad_f, w_init, learning_rate=0.01, n_iters=1000, tol=1e-6):
-	w = w_init.copy()
-	history = [w.copy()]
-	for i in range(n_iters):
-		grad = grad_f(w)
-		w = w - learning_rate * grad
-		history.append(w.copy())
-		if np.linalg.norm(grad) < tol:  # điều kiện dừng sớm khi gradient đủ nhỏ
-			print(f"Hội tụ sau {i+1} bước")
-			break
-	return w, history
-```
-
-## 6. 3 biến thể của Gradient Descent — khác biệt ở LƯỢNG DỮ LIỆU dùng mỗi bước
-
-### Batch Gradient Descent — dùng TOÀN BỘ dataset mỗi bước cập nhật
-
-```python
-def batch_gradient_descent(X, y, w_init, lr=0.01, n_iters=100):
-	w = w_init.copy()
-	m = len(y)
+# Mục 5: cài đặt cả 3 biến thể — verify chúng đều hội tụ về nghiệm gần giống nhau
+def batch_gradient_descent(X, y, w_init, lr=0.01, n_iters=200):
+	w = w_init.copy(); m = len(y)
 	for _ in range(n_iters):
-		grad = (2/m) * X.T @ (X @ w - y)  # dùng TOÀN BỘ m mẫu
+		grad = (2/m) * X.T @ (X @ w - y)  # dùng TOÀN BỘ m mẫu — gradient chính xác
 		w = w - lr * grad
 	return w
-```
-Ổn định, hội tụ mượt, nhưng **chậm** với dataset lớn (mỗi bước phải duyệt hết dữ liệu).
 
-### Stochastic Gradient Descent (SGD) — dùng 1 mẫu ngẫu nhiên mỗi bước
-
-```python
-def stochastic_gradient_descent(X, y, w_init, lr=0.01, n_epochs=50):
-	w = w_init.copy()
-	m = len(y)
-	for epoch in range(n_epochs):
-		indices = np.random.permutation(m)
-		for i in indices:
+def stochastic_gradient_descent(X, y, w_init, lr=0.01, n_epochs=20):
+	w = w_init.copy(); m = len(y)
+	for _ in range(n_epochs):
+		for i in np.random.permutation(m):
 			xi, yi = X[i:i+1], y[i:i+1]
-			grad = 2 * xi.T @ (xi @ w - yi)  # CHỈ dùng 1 mẫu
+			grad = 2 * xi.T @ (xi @ w - yi)  # chỉ 1 mẫu — ước lượng NHIỄU của gradient thật
 			w = w - lr * grad.flatten()
 	return w
-```
-Nhanh hơn nhiều mỗi bước, nhưng đường hội tụ "nhiễu" (dao động) vì mỗi mẫu chỉ là ước lượng thô của gradient thật.
 
-### Mini-batch Gradient Descent — cân bằng giữa 2 cách trên (dùng phổ biến NHẤT trong Deep Learning)
-
-```python
 def minibatch_gradient_descent(X, y, w_init, lr=0.01, batch_size=32, n_epochs=50):
-	w = w_init.copy()
-	m = len(y)
-	for epoch in range(n_epochs):
+	w = w_init.copy(); m = len(y)
+	for _ in range(n_epochs):
 		indices = np.random.permutation(m)
 		for start in range(0, m, batch_size):
-			batch_idx = indices[start:start+batch_size]
-			X_batch, y_batch = X[batch_idx], y[batch_idx]
-			grad = (2/len(batch_idx)) * X_batch.T @ (X_batch @ w - y_batch)
+			idx = indices[start:start+batch_size]
+			Xb, yb = X[idx], y[idx]
+			grad = (2/len(idx)) * Xb.T @ (Xb @ w - yb)  # trung bình b mẫu — nhiễu giảm theo 1/sqrt(b)
 			w = w - lr * grad
 	return w
-```
-
-`batch_size` (thường 32, 64, 128, 256) là hyperparameter cân bằng tốc độ và độ ổn định — đây chính là biến thể dùng khi huấn luyện mạng neural ([Bài 20-22](./20_neural_networks.md)).
-
-## 7. So sánh trực quan 3 biến thể
-
-| | Batch GD | SGD | Mini-batch GD |
-|---|---|---|---|
-| Dữ liệu/bước | Toàn bộ $m$ mẫu | 1 mẫu | $b$ mẫu ($1 < b < m$) |
-| Tốc độ/bước | Chậm | Rất nhanh | Vừa phải |
-| Độ ổn định hội tụ | Mượt | Nhiễu, dao động | Khá mượt |
-| Dùng thực tế trong DL | Hiếm (dataset lớn không khả thi) | Hiếm khi dùng thuần túy | **Chuẩn công nghiệp** |
-
-## Ví dụ đầy đủ: so sánh 3 biến thể trên cùng bài toán
-
-```python
-import numpy as np
 
 np.random.seed(42)
 m = 200
@@ -144,26 +102,22 @@ X = np.hstack([np.ones((m,1)), np.random.randn(m,1)*2])
 true_w = np.array([3, 5])
 y = X @ true_w + np.random.randn(m) * 0.5
 
-w_init = np.zeros(2)
-w_batch = batch_gradient_descent(X, y, w_init, lr=0.05, n_iters=200)
-w_sgd = stochastic_gradient_descent(X, y, w_init, lr=0.01, n_epochs=20)
-w_minibatch = minibatch_gradient_descent(X, y, w_init, lr=0.05, batch_size=32, n_epochs=50)
-
+w0 = np.zeros(2)
 print("True w:", true_w)
-print("Batch GD:", w_batch)
-print("SGD:", w_sgd)
-print("Mini-batch GD:", w_minibatch)
+print("Batch:", batch_gradient_descent(X, y, w0, lr=0.05, n_iters=200))
+print("SGD:", stochastic_gradient_descent(X, y, w0, lr=0.01, n_epochs=20))
+print("Mini-batch:", minibatch_gradient_descent(X, y, w0, lr=0.05, batch_size=32, n_epochs=50))
 ```
 
 ## Bài tập
 
-1. **Tổ hợp/hoán vị**: tính tay số cách chia 20 mẫu dữ liệu thành 5-fold cross-validation (mỗi fold 4 mẫu) — liên hệ [Bài 16](./16_model_evaluation.md).
-2. **Kiểm tra hàm lồi**: viết hàm kiểm tra Hessian dương tại nhiều điểm ngẫu nhiên cho 3 hàm: $f(x)=x^2$ (lồi), $f(x)=x^4-x^2$ (không lồi toàn cục), $f(x,y)=x^2+y^2$ (lồi).
-3. **Implement 3 biến thể GD**: dùng code mẫu trên làm nền, tự viết lại cả 3, chạy trên cùng dataset, vẽ đồ thị loss theo epoch (liên hệ [Bài 13](./13_data_visualization_eda.md)) để so sánh trực quan tốc độ hội tụ và độ nhiễu.
-4. **Nâng cao**: thử nhiều `batch_size` khác nhau (8, 32, 128) cho Mini-batch GD, quan sát ảnh hưởng tới tốc độ hội tụ và độ dao động của loss.
+1. **Tổ hợp ứng dụng**: tính tay số cách chia 20 mẫu dữ liệu thành 5-fold cross-validation (mỗi fold 4 mẫu, không lặp) — liên hệ [Bài 16](./16_model_evaluation.md).
+2. **Kiểm tra hàm lồi**: dùng Hessian numerical ([Bài 7](./7_calculus_optimization.md)), verify $f(x)=x^2$ lồi và $f(x)=x^4-x^2$ KHÔNG lồi toàn cục (có vùng Hessian âm).
+3. **So sánh độ nhiễu 3 biến thể**: chạy cả 3 hàm mẫu, lưu lại `loss` sau MỖI bước cập nhật (không chỉ kết quả cuối), vẽ đồ thị loss theo số bước (liên hệ [Bài 13](./13_data_visualization_eda.md)) — quan sát trực quan Batch mượt nhất, SGD nhiễu nhất, Mini-batch ở giữa.
+4. **Verify lý thuyết "nhiễu giảm theo $1/\sqrt{b}$"**: với cùng dataset, chạy Mini-batch GD với `batch_size` = 4, 16, 64, đo độ lệch chuẩn của gradient ước lượng so với gradient thật (Batch) tại 1 điểm $\vec{w}$ cố định — verify độ lệch chuẩn giảm theo đúng tỷ lệ $1/\sqrt{b}$.
 
 ## Tổng kết Phần I — Toán Nền Tảng
-Bạn đã hoàn thành 4 mảng toán cốt lõi: Đại số tuyến tính (biểu diễn dữ liệu), Giải tích (cách model học qua gradient), Xác suất & Thống kê (nguồn gốc hàm loss), Toán rời rạc & Tối ưu hóa (thuật toán tối ưu). Từ đây, mọi công thức ở Phần II-III sẽ được giải thích bằng cách trỏ ngược lại các bài này.
+Bạn đã hoàn thành 4 mảng toán cốt lõi với đầy đủ suy luận (không chỉ công thức): Đại số tuyến tính (dữ liệu & biến đổi không gian), Giải tích (cách model học qua gradient, chứng minh hội tụ), Xác suất & Thống kê (nguồn gốc MỌI hàm loss qua MLE/MAP), Toán rời rạc & Tối ưu hóa (thuật toán thực sự giải bài toán tối ưu). Từ đây, mọi công thức ở Phần II-III sẽ được giải thích bằng cách trỏ ngược lại các bài này.
 
 ## Tiếp theo
 → [Bài 12: NumPy & Pandas cho Data Science](./12_numpy_pandas.md)

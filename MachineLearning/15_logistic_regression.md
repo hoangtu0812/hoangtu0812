@@ -13,6 +13,8 @@ Nếu dùng $\hat{y} = \vec{w}^T\vec{x}+b$ trực tiếp cho nhãn 0/1, giá tr�
 
 $$\sigma(z) = \frac{1}{1+e^{-z}}$$
 
+![Hàm Sigmoid nén giá trị về khoảng (0,1)](./images/sigmoid_curve.svg)
+
 ```python
 import numpy as np
 

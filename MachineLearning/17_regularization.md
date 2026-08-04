@@ -11,6 +11,8 @@ Sai số tổng quát hóa (generalization error) phân tích thành:
 
 $$\text{Expected Error} = \underbrace{\text{Bias}^2}_{\text{lỗi do model quá đơn giản}} + \underbrace{\text{Variance}}_{\text{lỗi do model quá nhạy với dữ liệu train}} + \underbrace{\text{Irreducible Error}}_{\text{nhiễu vốn có}}$$
 
+![Underfitting, vừa đủ, và Overfitting](./images/bias_variance_fit.svg)
+
 - **High Bias (Underfitting)**: model quá đơn giản (vd Linear Regression cho quan hệ phi tuyến phức tạp) — sai số cao dù dùng dữ liệu nào.
 - **High Variance (Overfitting)**: model quá phức tạp (vd Polynomial bậc cao — [Bài 16 mục 4](./16_model_evaluation.md)) — dự đoán thay đổi mạnh nếu đổi tập train khác.
 
