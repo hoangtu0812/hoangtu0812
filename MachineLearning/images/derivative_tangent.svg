@@ -1,0 +1,24 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="400" height="300" fill="white"/>
+  <defs>
+    <marker id="atA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="20" y1="260" x2="380" y2="260" stroke="#333" stroke-width="1.2" marker-end="url(#atA)"/>
+  <line x1="40" y1="280" x2="40" y2="20" stroke="#333" stroke-width="1.2" marker-end="url(#atA)"/>
+
+  <!-- curve y = 0.02*(x-200)^2/... approximated by path, f(x)=x^2/300 shifted -->
+  <path d="M 60 250 Q 200 250 200 130 Q 260 40 340 40" fill="none" stroke="#1f77b4" stroke-width="3"/>
+  <text x="300" y="60" font-size="13" fill="#1f77b4" font-weight="bold">f(x)</text>
+
+  <!-- point of tangency -->
+  <circle cx="200" cy="150" r="5" fill="#d62728"/>
+  <text x="205" y="145" font-size="12" fill="#d62728">(x₀, f(x₀))</text>
+
+  <!-- tangent line through that point, slope illustrative -->
+  <line x1="120" y1="230" x2="290" y2="70" stroke="#d62728" stroke-width="2.5" stroke-dasharray="6,4"/>
+  <text x="230" y="90" font-size="12" fill="#d62728" font-weight="bold">tiếp tuyến, độ dốc = f'(x₀)</text>
+
+  <text x="20" y="20" font-size="14" fill="#111" font-weight="bold">Đạo hàm = độ dốc của tiếp tuyến tại 1 điểm</text>
+</svg>

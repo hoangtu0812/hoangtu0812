@@ -1,0 +1,54 @@
+<svg viewBox="0 0 340 380" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="340" height="380" fill="white"/>
+  <defs>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1f77b4"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2ca02c"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#d62728"/>
+    </marker>
+    <marker id="arrowAxis" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- grid -->
+  <g stroke="#eee" stroke-width="1">
+    <line x1="10" y1="0" x2="10" y2="380"/><line x1="60" y1="0" x2="60" y2="380"/>
+    <line x1="110" y1="0" x2="110" y2="380"/><line x1="160" y1="0" x2="160" y2="380"/>
+    <line x1="210" y1="0" x2="210" y2="380"/><line x1="260" y1="0" x2="260" y2="380"/>
+    <line x1="310" y1="0" x2="310" y2="380"/>
+    <line x1="0" y1="0" x2="340" y2="0"/><line x1="0" y1="50" x2="340" y2="50"/>
+    <line x1="0" y1="100" x2="340" y2="100"/><line x1="0" y1="150" x2="340" y2="150"/>
+    <line x1="0" y1="200" x2="340" y2="200"/><line x1="0" y1="250" x2="340" y2="250"/>
+    <line x1="0" y1="300" x2="340" y2="300"/><line x1="0" y1="350" x2="340" y2="350"/>
+  </g>
+
+  <!-- axes (origin at 60,300) -->
+  <line x1="10" y1="300" x2="325" y2="300" stroke="#333" stroke-width="1.5" marker-end="url(#arrowAxis)"/>
+  <line x1="60" y1="370" x2="60" y2="15" stroke="#333" stroke-width="1.5" marker-end="url(#arrowAxis)"/>
+  <text x="330" y="304" font-size="12" fill="#333">x</text>
+  <text x="45" y="14" font-size="12" fill="#333">y</text>
+  <text x="52" y="314" font-size="11" fill="#333">0</text>
+
+  <!-- dashed parallelogram helper lines -->
+  <line x1="110" y1="200" x2="260" y2="250" stroke="#2ca02c" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="210" y1="350" x2="260" y2="250" stroke="#1f77b4" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- vector u = [1,2] -->
+  <line x1="60" y1="300" x2="108" y2="202" stroke="#1f77b4" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="80" y="235" font-size="14" fill="#1f77b4" font-weight="bold">u = [1, 2]</text>
+
+  <!-- vector v = [3,-1] -->
+  <line x1="60" y1="300" x2="208" y2="348" stroke="#2ca02c" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="130" y="345" font-size="14" fill="#2ca02c" font-weight="bold">v = [3, -1]</text>
+
+  <!-- vector u+v = [4,1] -->
+  <line x1="60" y1="300" x2="258" y2="252" stroke="#d62728" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="200" y="230" font-size="14" fill="#d62728" font-weight="bold">u + v = [4, 1]</text>
+
+  <text x="10" y="20" font-size="15" fill="#111" font-weight="bold">Quy tắc hình bình hành: u + v</text>
+</svg>

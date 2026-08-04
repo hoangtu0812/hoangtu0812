@@ -1,0 +1,45 @@
+<svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="480" height="300" fill="white"/>
+
+  <!-- input layer -->
+  <circle cx="60" cy="80" r="16" fill="#cfe3f5" stroke="#1f77b4" stroke-width="2"/>
+  <circle cx="60" cy="150" r="16" fill="#cfe3f5" stroke="#1f77b4" stroke-width="2"/>
+  <circle cx="60" cy="220" r="16" fill="#cfe3f5" stroke="#1f77b4" stroke-width="2"/>
+  <text x="30" y="260" font-size="12" fill="#1f77b4" font-weight="bold">Input layer (x)</text>
+
+  <!-- hidden layer -->
+  <circle cx="230" cy="60" r="16" fill="#d9f0d3" stroke="#2ca02c" stroke-width="2"/>
+  <circle cx="230" cy="120" r="16" fill="#d9f0d3" stroke="#2ca02c" stroke-width="2"/>
+  <circle cx="230" cy="180" r="16" fill="#d9f0d3" stroke="#2ca02c" stroke-width="2"/>
+  <circle cx="230" cy="240" r="16" fill="#d9f0d3" stroke="#2ca02c" stroke-width="2"/>
+  <text x="180" y="275" font-size="12" fill="#2ca02c" font-weight="bold">Hidden layer (σ(Wx+b))</text>
+
+  <!-- output layer -->
+  <circle cx="400" cy="150" r="16" fill="#fde3cf" stroke="#ff7f0e" stroke-width="2"/>
+  <text x="365" y="190" font-size="12" fill="#ff7f0e" font-weight="bold">Output ŷ</text>
+
+  <!-- connections input->hidden -->
+  <g stroke="#bbb" stroke-width="1">
+    <line x1="76" y1="80" x2="214" y2="60"/>
+    <line x1="76" y1="80" x2="214" y2="120"/>
+    <line x1="76" y1="80" x2="214" y2="180"/>
+    <line x1="76" y1="80" x2="214" y2="240"/>
+    <line x1="76" y1="150" x2="214" y2="60"/>
+    <line x1="76" y1="150" x2="214" y2="120"/>
+    <line x1="76" y1="150" x2="214" y2="180"/>
+    <line x1="76" y1="150" x2="214" y2="240"/>
+    <line x1="76" y1="220" x2="214" y2="60"/>
+    <line x1="76" y1="220" x2="214" y2="120"/>
+    <line x1="76" y1="220" x2="214" y2="180"/>
+    <line x1="76" y1="220" x2="214" y2="240"/>
+  </g>
+  <!-- connections hidden->output -->
+  <g stroke="#bbb" stroke-width="1">
+    <line x1="246" y1="60" x2="384" y2="150"/>
+    <line x1="246" y1="120" x2="384" y2="150"/>
+    <line x1="246" y1="180" x2="384" y2="150"/>
+    <line x1="246" y1="240" x2="384" y2="150"/>
+  </g>
+
+  <text x="20" y="20" font-size="14" fill="#111" font-weight="bold">Mạng neural: forward propagation qua các lớp</text>
+</svg>

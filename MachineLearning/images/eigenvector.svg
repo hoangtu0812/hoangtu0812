@@ -1,0 +1,32 @@
+<svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="380" height="320" fill="white"/>
+  <defs>
+    <marker id="aeBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1f77b4"/>
+    </marker>
+    <marker id="aeRed" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#d62728"/>
+    </marker>
+    <marker id="aeGray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#999"/>
+    </marker>
+  </defs>
+
+  <line x1="20" y1="270" x2="360" y2="270" stroke="#333" stroke-width="1.2" marker-end="url(#aeGray)"/>
+  <line x1="60" y1="300" x2="60" y2="20" stroke="#333" stroke-width="1.2" marker-end="url(#aeGray)"/>
+
+  <!-- a non-eigenvector: changes direction after transform -->
+  <line x1="60" y1="270" x2="140" y2="220" stroke="#999" stroke-width="2.5" marker-end="url(#aeGray)" stroke-dasharray="3,3"/>
+  <text x="140" y="215" font-size="12" fill="#777">vector thường</text>
+  <line x1="60" y1="270" x2="190" y2="130" stroke="#999" stroke-width="2.5" marker-end="url(#aeGray)"/>
+  <text x="195" y="130" font-size="12" fill="#777">→ sau A: đổi cả hướng</text>
+
+  <!-- eigenvector: same direction, just scaled -->
+  <line x1="60" y1="270" x2="140" y2="270" stroke="#1f77b4" stroke-width="3" marker-end="url(#aeBlue)"/>
+  <text x="95" y="290" font-size="12" fill="#1f77b4" font-weight="bold">v (vector riêng)</text>
+  <line x1="60" y1="270" x2="280" y2="270" stroke="#d62728" stroke-width="3" marker-end="url(#aeRed)"/>
+  <text x="230" y="255" font-size="12" fill="#d62728" font-weight="bold">A·v = λv (cùng hướng!)</text>
+
+  <text x="20" y="20" font-size="14" fill="#111" font-weight="bold">Vector riêng: hướng KHÔNG đổi sau biến đổi A</text>
+  <text x="20" y="40" font-size="12" fill="#333">chỉ bị kéo dài/ngắn theo hệ số λ (trị riêng)</text>
+</svg>

@@ -1,0 +1,40 @@
+<svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="600" height="220" fill="white"/>
+
+  <!-- Underfitting -->
+  <g>
+    <rect x="10" y="10" width="180" height="170" fill="none" stroke="#ddd"/>
+    <line x1="20" y1="150" x2="180" y2="150" stroke="#333" stroke-width="1"/>
+    <line x1="30" y1="170" x2="30" y2="30" stroke="#333" stroke-width="1"/>
+    <circle cx="50" cy="100" r="3" fill="#666"/><circle cx="70" cy="60" r="3" fill="#666"/>
+    <circle cx="90" cy="120" r="3" fill="#666"/><circle cx="110" cy="50" r="3" fill="#666"/>
+    <circle cx="130" cy="110" r="3" fill="#666"/><circle cx="150" cy="70" r="3" fill="#666"/>
+    <line x1="35" y1="105" x2="175" y2="80" stroke="#d62728" stroke-width="2.5"/>
+    <text x="30" y="200" font-size="13" fill="#d62728" font-weight="bold">Underfitting (high bias)</text>
+  </g>
+
+  <!-- Good fit -->
+  <g>
+    <rect x="210" y="10" width="180" height="170" fill="none" stroke="#ddd"/>
+    <line x1="220" y1="150" x2="380" y2="150" stroke="#333" stroke-width="1"/>
+    <line x1="230" y1="170" x2="230" y2="30" stroke="#333" stroke-width="1"/>
+    <circle cx="250" cy="100" r="3" fill="#666"/><circle cx="270" cy="60" r="3" fill="#666"/>
+    <circle cx="290" cy="120" r="3" fill="#666"/><circle cx="310" cy="50" r="3" fill="#666"/>
+    <circle cx="330" cy="110" r="3" fill="#666"/><circle cx="350" cy="70" r="3" fill="#666"/>
+    <path d="M 235 105 Q 260 60 280 100 Q 300 130 320 55 Q 335 90 375 65" fill="none" stroke="#2ca02c" stroke-width="2.5"/>
+    <text x="235" y="200" font-size="13" fill="#2ca02c" font-weight="bold">Vừa đủ (tổng quát tốt)</text>
+  </g>
+
+  <!-- Overfitting -->
+  <g>
+    <rect x="410" y="10" width="180" height="170" fill="none" stroke="#ddd"/>
+    <line x1="420" y1="150" x2="580" y2="150" stroke="#333" stroke-width="1"/>
+    <line x1="430" y1="170" x2="430" y2="30" stroke="#333" stroke-width="1"/>
+    <circle cx="450" cy="100" r="3" fill="#666"/><circle cx="470" cy="60" r="3" fill="#666"/>
+    <circle cx="490" cy="120" r="3" fill="#666"/><circle cx="510" cy="50" r="3" fill="#666"/>
+    <circle cx="530" cy="110" r="3" fill="#666"/><circle cx="550" cy="70" r="3" fill="#666"/>
+    <path d="M 435 108 C 445 95 455 102 450 100 C 460 55 465 65 470 60 C 480 130 485 112 490 120 C 500 45 505 55 510 50 C 520 118 525 105 530 110 C 540 65 545 75 550 70 C 555 68 565 68 575 68"
+          fill="none" stroke="#ff7f0e" stroke-width="2"/>
+    <text x="425" y="200" font-size="13" fill="#ff7f0e" font-weight="bold">Overfitting (high variance)</text>
+  </g>
+</svg>

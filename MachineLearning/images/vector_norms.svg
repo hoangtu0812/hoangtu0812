@@ -1,0 +1,21 @@
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="420" height="240" fill="white"/>
+
+  <!-- LEFT: L2 ball (circle) -->
+  <g>
+    <line x1="20" y1="110" x2="190" y2="110" stroke="#333" stroke-width="1.2"/>
+    <line x1="105" y1="20" x2="105" y2="200" stroke="#333" stroke-width="1.2"/>
+    <circle cx="105" cy="110" r="70" fill="none" stroke="#1f77b4" stroke-width="2.5"/>
+    <text x="35" y="228" font-size="14" fill="#1f77b4" font-weight="bold">L2 norm: hình tròn</text>
+  </g>
+
+  <!-- RIGHT: L1 ball (diamond) -->
+  <g>
+    <line x1="230" y1="110" x2="400" y2="110" stroke="#333" stroke-width="1.2"/>
+    <line x1="315" y1="20" x2="315" y2="200" stroke="#333" stroke-width="1.2"/>
+    <polygon points="315,40 385,110 315,180 245,110" fill="none" stroke="#d62728" stroke-width="2.5"/>
+    <text x="250" y="228" font-size="14" fill="#d62728" font-weight="bold">L1 norm: hình thoi (có góc nhọn)</text>
+  </g>
+
+  <text x="60" y="16" font-size="13" fill="#111">Tập điểm cách gốc 1 khoảng norm = 1</text>
+</svg>

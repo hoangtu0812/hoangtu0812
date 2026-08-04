@@ -1,0 +1,21 @@
+<svg viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="420" height="260" fill="white"/>
+  <defs>
+    <marker id="ndA" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+  </defs>
+  <line x1="20" y1="220" x2="400" y2="220" stroke="#333" stroke-width="1.2" marker-end="url(#ndA)"/>
+  <line x1="210" y1="230" x2="210" y2="20" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+  <text x="200" y="240" font-size="12" fill="#333">μ</text>
+
+  <!-- wide (sigma=2) -->
+  <path d="M 30 218 C 90 218 150 60 210 60 C 270 60 330 218 390 218" fill="none" stroke="#9fc9ec" stroke-width="2.5"/>
+  <text x="300" y="150" font-size="12" fill="#5b9bd5" font-weight="bold">σ = 2 (thấp, rộng)</text>
+
+  <!-- narrow (sigma=1) -->
+  <path d="M 90 218 C 130 218 170 30 210 30 C 250 30 290 218 330 218" fill="none" stroke="#1f77b4" stroke-width="2.5"/>
+  <text x="230" y="55" font-size="12" fill="#1f77b4" font-weight="bold">σ = 1 (cao, hẹp)</text>
+
+  <text x="20" y="20" font-size="14" fill="#111" font-weight="bold">Phân phối chuẩn N(μ, σ²)</text>
+</svg>

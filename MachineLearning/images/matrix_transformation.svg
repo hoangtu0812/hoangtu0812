@@ -1,0 +1,23 @@
+<svg viewBox="0 0 380 320" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="380" height="320" fill="white"/>
+  <defs>
+    <marker id="ah1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- axes -->
+  <line x1="20" y1="260" x2="360" y2="260" stroke="#333" stroke-width="1.2" marker-end="url(#ah1)"/>
+  <line x1="60" y1="300" x2="60" y2="20" stroke="#333" stroke-width="1.2" marker-end="url(#ah1)"/>
+
+  <!-- original unit square (dashed gray) -->
+  <polygon points="60,260 130,260 130,190 60,190" fill="none" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="70" y="278" font-size="12" fill="#666">Hình vuông đơn vị (gốc)</text>
+
+  <!-- transformed parallelogram A*square, e.g. A=[[2,1],[0,1]] -->
+  <polygon points="60,260 200,260 235,190 95,190" fill="#1f77b4" fill-opacity="0.25" stroke="#1f77b4" stroke-width="2.5"/>
+  <text x="150" y="180" font-size="13" fill="#1f77b4" font-weight="bold">A · (hình vuông) = hình bình hành</text>
+
+  <text x="20" y="20" font-size="14" fill="#111" font-weight="bold">Ma trận A "biến đổi" không gian</text>
+  <text x="20" y="40" font-size="12" fill="#333">A = [[2,1],[0,1]] kéo và nghiêng hình vuông</text>
+</svg>
