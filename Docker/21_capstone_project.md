@@ -1,4 +1,4 @@
-<Bài 21: Dự án Capstone - Containerize ứng dụng Multi-service hoàn chỉnh>
+# Dự án Capstone: Containerize ứng dụng Multi-service hoàn chỉnh
 ## Mục tiêu
 - Tổng hợp và áp dụng toàn bộ kiến thức Docker đã học từ Bài 1 đến Bài 20.
 - Containerize một ứng dụng thực tế với kiến trúc microservices (Frontend, Backend, Database, Cache, Reverse Proxy).
